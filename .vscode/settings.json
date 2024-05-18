@@ -1,0 +1,7 @@
+{
+    "cmake.sourceDirectory": "/home/tyrelle/webserver/build",
+    "files.associations": {
+        "string": "cpp",
+        "mutex": "cpp"
+    }
+}
