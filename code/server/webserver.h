@@ -71,7 +71,7 @@ private:
     int timeoutMS_;  /* 毫秒MS */
     bool isClose_;  // 是否关闭
     int listenFd_;  // 监听的文件描述符
-    char* srcDir_;  // 资源的目录
+    char srcDir_[256];  // 资源的目录
     
     uint32_t listenEvent_;  // 监听的文件描述符的事件
     uint32_t connEvent_;    // 连接的文件描述符的事件

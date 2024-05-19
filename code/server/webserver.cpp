@@ -12,9 +12,11 @@ WebServer::WebServer(
             timer_(new HeapTimer()), threadpool_(new ThreadPool(threadNum)), epoller_(new Epoller())
     {
     // /home/nowcoder/WebServer-master/
-    srcDir_ = getcwd(nullptr, 256); // 获取当前的工作路径
+    char cur_work_dir[256];
+    getcwd(srcDir_, 256); // 获取当前的工作路径
     assert(srcDir_);
     // /home/nowcoder/WebServer-master/resources/
+    strncpy(cur_work_dir, srcDir_, 256);
     strncat(srcDir_, "/resources/", 16);    // 拼接资源路径
     
     // 当前所有连接数
@@ -32,7 +34,7 @@ WebServer::WebServer(
 
     if(openLog) {
         // 初始化日志信息
-        Log::Instance()->init(logLevel, "./log", ".log", logQueSize);
+        Log::Instance()->init(logLevel, cur_work_dir, ".log", logQueSize);
         if(isClose_) { LOG_ERROR("========== Server init error!=========="); }
         else {
             LOG_INFO("========== Server init ==========");
