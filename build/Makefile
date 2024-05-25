@@ -1,5 +1,5 @@
 CXX = g++
-CFLAGS = -std=c++11 -O2 -Wall -g 
+CFLAGS = -std=c++17 -O2 -Wall -g 
 
 TARGET = webserver
 OBJS = ../code/log/*.cpp ../code/pool/*.cpp ../code/timer/*.cpp \

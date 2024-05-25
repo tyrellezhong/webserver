@@ -26,22 +26,25 @@ bool HttpRequest::IsKeepAlive() const {
 
 // 解析请求数据
 bool HttpRequest::parse(Buffer& buff) {
-    LOG_INFO("                                                                                 ");// 相当于空行
+    LOG_DEBUG("=============request parse begin================");
+    LOG_DEBUG("request line -----:")
+
     const char CRLF[] = "\r\n"; // 行结束符
     if(buff.ReadableBytes() <= 0) {
         return false;
     }
     // buff中有数据可读，并且状态没有到FINISH，就一直解析
+    int line_count = 0;
     while(buff.ReadableBytes() && state_ != FINISH) {
         // 获取一行数据，根据\r\n为结束标志
         const char* lineEnd = search(buff.Peek(), buff.BeginWriteConst(), CRLF, CRLF + 2);
         // 构造一行数据
         std::string line(buff.Peek(), lineEnd);
+        LOG_DEBUG("line %d : %s", ++line_count, line.data());
         switch(state_)
         {
         case REQUEST_LINE:
             // 解析请求首行
-            // LOG_DEBUG("=============测试解析请求--------行================");
             if(!ParseRequestLine_(line)) {
                 return false;
             }
@@ -50,7 +53,6 @@ bool HttpRequest::parse(Buffer& buff) {
             break;    
         case HEADERS:
             // 解析请求头
-            // LOG_DEBUG("================测试解析请求---------头================");
             ParseHeader_(line);
             if(buff.ReadableBytes() <= 2) {
                 state_ = FINISH;
@@ -58,7 +60,6 @@ bool HttpRequest::parse(Buffer& buff) {
             break;
         case BODY:
             // 解析请求体
-            LOG_DEBUG("===================测试解析请求----------体================");
             ParseBody_(line);
             break;
         default:
@@ -70,7 +71,7 @@ bool HttpRequest::parse(Buffer& buff) {
     }
 
     // 输出请求端口号，相对路径，协议版本
-    LOG_DEBUG("[%s], [%s], [%s]", method_.c_str(), path_.c_str(), version_.c_str());
+    LOG_DEBUG("request parse end----- [%s], [%s], [%s]", method_.c_str(), path_.c_str(), version_.c_str());
     return true;
 }
 
@@ -102,6 +103,7 @@ bool HttpRequest::ParseRequestLine_(const string& line) {
         path_ = subMatch[2];
         version_ = subMatch[3];
         state_ = HEADERS;
+        LOG_DEBUG("request head -----")
         return true;
     }
     LOG_ERROR("RequestLine Error");
@@ -119,6 +121,7 @@ void HttpRequest::ParseHeader_(const string& line) {
     }
     else {
         state_ = BODY;
+        LOG_DEBUG("request body -----")
     }
 }
 

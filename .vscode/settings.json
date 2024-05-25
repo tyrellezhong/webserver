@@ -2,7 +2,9 @@
     "cmake.sourceDirectory": "/home/tyrelle/webserver/build",
     "files.associations": {
         "string": "cpp",
-        "mutex": "cpp"
+        "mutex": "cpp",
+        "*.tcc": "cpp",
+        "chrono": "cpp"
     },
     "C_Cpp.errorSquiggles": "disabled"
 }

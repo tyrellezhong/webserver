@@ -84,13 +84,13 @@ void Log::init(int level = 1, const char* path, const char* suffix,
             fclose(fp_); 
         }
 
-        fp_ = fopen(fileName, "a"); // 打开日志文件
+        fp_ = fopen(fileName, "w"); // 打开日志文件
         // 不存在，重新创建
         if(fp_ == nullptr) {
             // 创建目录
             mkdir(path_, 0777);
             // 追加到一个文件。写操作向文件末尾追加数据。如果文件不存在，则创建文件。
-            fp_ = fopen(fileName, "a");
+            fp_ = fopen(fileName, "w");
         } 
         assert(fp_ != nullptr);
     }
